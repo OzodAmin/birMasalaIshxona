@@ -13,6 +13,7 @@ use App\Models\Product;
 use App\Models\Country;
 use App\Models\Measure;
 use App\Models\Basis;
+use App\Models\Rkp;
 use App\User;
 use Flash;
 use DB;
@@ -64,9 +65,19 @@ class ProductController extends AppBaseController
 
     public function store(Request $request)
     {
+        $saldo = Rkp::where('user_id', auth()->id())->
+                        where('currency_id', $request->currency_id)->
+                        first();
+        $ostatok = null;
+        if (isset($saldo)) {$ostatok = $saldo->saldo;}
+    
+dd($request->summa); 
+        $request->merge(['saldo' => $ostatok]);
     	$validation = Product::$rules + 
     		['featured_image' => 'required|image|max:2048|mimes:jpeg,png,jpg',
-	    	'name' => 'required|string|min:1|max:255',
+            'name' => 'required|string|min:1|max:255',
+            'summa' => 'required|min:1',
+	    	'saldo' => 'min:'.$request->summa,
 	        'description' => 'required|string|min:1|max:255'];
     	$this->validate($request, $validation);
     	
@@ -90,7 +101,7 @@ class ProductController extends AppBaseController
     				'conditions' => $request['conditions']
     		]
         ]);
-        
+       dd(); 
         $product = new Product();
         $product->fill($request->except(['_token', 'name', 'description', 'conditions']));
 
@@ -196,6 +207,16 @@ class ProductController extends AppBaseController
 
         return response()->json($categoriesArray);
     }
+
+    // public function getUserSaldo(Request $request){
+    //     $saldo = Rkp::where('user_id', auth()->id())->
+    //                     where('currency_id', $request->currencyId)->
+    //                     first();
+    //     $ostatok = null;
+    //     if (isset($saldo)) {$ostatok = $saldo->saldo;}
+
+    //     return response()->json($saldo);
+    // }
 
     protected function uploadPhoto(UploadedFile $file) {
 

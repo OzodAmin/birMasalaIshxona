@@ -3,6 +3,7 @@
 <script src="{{ asset('front/js/mmenu.min.js') }}"></script>
 <script src="{{ asset('front/js/tippy.all.min.js') }}"></script>
 <script src="{{ asset('front/js/simplebar.min.js') }}"></script>
+<script src="{{ asset('front/js/popper.min.js') }}"></script>
 <script src="{{ asset('front/js/bootstrap-slider.min.js') }}"></script>
 <script src="{{ asset('front/js/bootstrap-select.min.js') }}"></script>
 <script src="{{ asset('front/js/snackbar.js') }}"></script>

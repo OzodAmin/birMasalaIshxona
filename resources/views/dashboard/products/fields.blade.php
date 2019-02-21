@@ -1,7 +1,14 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('datePicker/css/bootstrap-datepicker3.css') }}">
 @endsection
-
+@if (count($errors) > 0)
+    <div class="notification error closeable">
+        @foreach ($errors->all() as $error)
+                <p>{{ $error }}</p>
+        @endforeach
+        <a class="close" href="#"></a>
+    </div>
+@endif
 <div class="row">
     <div class="col-xl-12">
         <div class="dashboard-box margin-top-0">
@@ -15,9 +22,6 @@
                                 isset($product) ? $product->title : null,
                                 ['class' => 'with-border'])
                             }}
-                            <span class="control-label">
-                                <?php echo $errors->first('name'); ?>
-                            </span> 
                         </div>
                     </div>
 
@@ -99,14 +103,13 @@
                         <div class="submit-field{{ $errors->has('srok_godnosti') ? ' has-error' : '' }}">
                             <h5 class="control-label">Срок годности</h5>
 
-                            <div class="input-with-icon">
+                            <div class="input-with-icon {{ $errors->has('srok_godnosti') ? ' has-error' : '' }}">
                                 {{ Form::text('srok_godnosti',
                                     isset($product) ? $product->srok_godnosti : null,
                                     ['class' => 'with-border', 'id' => 'datePicker2'])
                                 }}
                                 <i class="icon-line-awesome-calendar"></i>
                             </div>
-                            
                         </div>
                     </div>
 
@@ -141,18 +144,17 @@
                     <div class="col-xl-3">
                         <div class="submit-field{{ $errors->has('quantity') ? ' has-error' : '' }}">
                             <h5 class="control-label">Количество</h5>
-                            <div class="input-with-icon">
-                                <div id="autocomplete-container">
-                                    {{ Form::text('quantity',
-                                        isset($product) ? $product->quantity : null,
-                                        [
-                                            'class' => 'with-border',
-                                            'onkeypress' => 'javascript:return isNumber(event)',
-                                            'placeholder' => 'Количество'
-                                        ])
-                                    }}
-                                </div>
-                                <i class="adding">piece</i>
+                            <div class="input-with-icon{{ $errors->has('quantity') ? ' has-error' : '' }}">
+                                {{ Form::text('quantity',
+                                    isset($product) ? $product->quantity : null,
+                                    [
+                                        'id' => 'quantity',
+                                        'class' => 'with-border',
+                                        'onkeypress' => 'javascript:return isNumber(event)',
+                                        'placeholder' => 'Количество'
+                                    ])
+                                }}
+                                <i class="adding"></i>
                             </div>
                         </div>
                     </div>
@@ -160,7 +162,7 @@
                     <div class="col-xl-3">
                         <div class="submit-field{{ $errors->has('min_order') ? ' has-error' : '' }}">
                             <h5 class="control-label">Мин партия</h5>
-                            <div class="input-with-icon">
+                            <div class="input-with-icon{{ $errors->has('min_order') ? ' has-error' : '' }}">
                                 {{ Form::text('min_order',
                                     isset($product) ? $product->min_order : null,
                                     [
@@ -170,7 +172,7 @@
                                         'placeholder' => 'Количество'
                                     ])
                                 }}
-                                <i class="adding">piece</i>
+                                <i class="adding"></i>
                             </div>
                         </div>
                     </div>
@@ -178,7 +180,7 @@
                     <div class="col-xl-3">
                         <div class="submit-field{{ $errors->has('max_order') ? ' has-error' : '' }}">
                             <h5 class="control-label">Макс партия</h5>
-                            <div class="input-with-icon">
+                            <div class="input-with-icon{{ $errors->has('max_order') ? ' has-error' : '' }}">
                                 {{ Form::text('max_order',
                                     isset($product) ? $product->max_order : null,
                                     [
@@ -188,7 +190,7 @@
                                         'placeholder' => 'Количество'
                                     ])
                                 }}
-                                <i class="adding">piece</i>
+                                <i class="adding"></i>
                             </div>
                         </div>
                     </div>
@@ -202,6 +204,7 @@
                                 $currencyArray, 
                                 null, 
                                 [
+                                    'id' => 'currency_id',
                                     'class' => 'selectpicker with-border',
                                     'data-live-search' => 'true',
                                     'data-size' => '7',
@@ -213,18 +216,17 @@
                     <div class="col-xl-3">
                         <div class="submit-field{{ $errors->has('price') ? ' has-error' : '' }}">
                             <h5 class="control-label">Цена за единицу товара</h5>
-                            <div class="input-with-icon">
-                                <div id="autocomplete-container">
-                                    {{ Form::text('price',
-                                        isset($product) ? $product->price : null,
-                                        [
-                                            'class' => 'with-border',
-                                            'onkeypress' => 'javascript:return isNumber(event)',
-                                            'placeholder' => 'Цена'
-                                        ])
-                                    }}
-                                </div>
-                                <i>SUM</i>
+                            <div class="input-with-icon{{ $errors->has('price') ? ' has-error' : '' }}">
+                                {{ Form::text('price',
+                                    isset($product) ? $product->price : null,
+                                    [
+                                        'id' => 'price',
+                                        'class' => 'with-border',
+                                        'onkeypress' => 'javascript:return isNumber(event)',
+                                        'placeholder' => 'Цена'
+                                    ])
+                                }}
+                                <i class="currencyAdding"></i>
                             </div>
                         </div>
                     </div>
@@ -238,9 +240,9 @@
                             </h5>
                             <div class="input-with-icon">
                                 <div id="autocomplete-container">
-                                    <input id="autocomplete-input" class="with-border" type="text" value="122000000" disabled>
+                                    <input id="autocomplete-input" class="with-border" type="text"name="summa" disabled>
                                 </div>
-                                <i>SUM</i>
+                                <i class="currencyAdding"></i>
                             </div>
                         </div>
                     </div>
@@ -276,7 +278,9 @@
                             <h5 class="control-label">Год выпуска товара</h5>
                             {{ Form::text('produced_year',
                                 isset($product) ? $product->produced_year : null,
-                                ['class' => 'with-border'])
+                                [   'class' => 'with-border', 
+                                    'id' => 'datePickerYear',
+                                    'onkeypress' => 'javascript:return isNumber(event)'])
                             }}
                         </div>
                     </div>                              
@@ -379,7 +383,7 @@
                         <div class="submit-field{{ $errors->has('expire_at') ? ' has-error' : '' }}">
                             <h5 class="control-label">Срок действия объявления</h5>
 
-                            <div class="input-with-icon">
+                            <div class="input-with-icon{{ $errors->has('expire_at') ? ' has-error' : '' }}">
                                 {{ Form::text('expire_at',
                                     isset($product) ? $product->expire_at : null,
                                     [
@@ -452,7 +456,7 @@
     </div>
 
     <div class="col-xl-12">
-        {!! Form::submit('Добавить',['class' => 'button ripple-effect big margin-top-30', 'onClick' => 'checkform();'])!!}
+        {!! Form::submit('Добавить',['class' => 'button ripple-effect big margin-top-30'])!!}
     </div>
 </div>
 
@@ -468,6 +472,10 @@ const $maxOrder = document.querySelector('#max_order');
 
 $("#measure_id").on("change",function(){
     $('.adding').html($('#measure_id :selected').text());
+});
+
+$("#currency_id").on("change",function(){
+    $('.currencyAdding').html($('#currency_id :selected').text());
 });
 
 $('#datePicker2').datepicker({
@@ -486,6 +494,29 @@ $('#datePicker').datepicker({
     language: "{{ str_replace('_', '-', app()->getLocale()) }}"
 });
 
+$('#datePickerYear').datepicker({
+    format: "yyyy",
+    viewMode: "years", 
+    minViewMode: "years"
+});
+
+setInterval(function() {
+    var quantity = Number($('#quantity').val());
+    var price = Number($('#price').val());
+    if (price){
+        if (quantity){
+            var result = price * quantity;
+            document.getElementById('autocomplete-input').value = result;
+            $('#autocomplete-input').val(result);
+        }else{
+            $('#autocomplete-input').val('');
+        }
+    }else{
+        $('#autocomplete-input').val('');
+    } 
+}, 5000);
+
+
 $('#chkIsNds').change(function(){
     if ($('#chkIsNds').is(':checked') == true){
 
@@ -496,7 +527,7 @@ $('#chkIsNds').change(function(){
         $('#ndsPetcentIcon').addClass('icon-feather-percent');
     }
     else {
-
+        $('#txtNds').val('');
         $('#txtNds').prop('disabled', true);
         $('#txtNds').removeClass('with-border');
         $('#txtNds').attr("placeholder", "");
@@ -522,6 +553,10 @@ $('#chkIsOld').change(function(){
         $('#usagePetcentIcon').addClass('icon-feather-percent');
     }
     else {
+        $('#txtUsagePercentage').val('');
+        $('#txtUsagePeriod').val('');
+        $('#txtUsageCondition').val('');
+
         $('#txtUsagePercentage').prop('disabled', true);
         $('#txtUsagePeriod').prop('disabled', true);
         $('#txtUsageCondition').prop('disabled', true);
@@ -572,9 +607,35 @@ function validateForm() {
     if($maxOrder.value < $minOrder.value) {
         swal("Ooops..", "Max is less than Min", "error");
         return false;
-    } else {
-        document.frmMr.submit();
     }
+
+    var currencyId = $('#currency_id :selected').val();
+    var totalPrice = $('#autocomplete-input').val();
+
+    // if (currencyId) {
+
+    //     // $.ajax({
+    //     //     type:"GET",
+    //     //     url:"{{url('api/getUserSaldo')}}?currencyId="+currencyId,
+    //     //     success:function(res){
+    //     //         if (res) {
+    //     //             // if(res < totalPrice){
+    //     //             //     swal("Sorry", "You do not have enough value in currency " + currencyTitle, "error");
+    //     //             //     return false;
+    //     //             // }
+    //     //             // else
+    //     //             //     return true;
+    //     //         }else {
+    //     //             var currencyTitle = $('#currency_id :selected').text();
+    //     //             swal("Sorry", "You do not have bank account or not enough value for " + currencyTitle, "error");
+    //     //             return false;
+    //     //         }
+    //     //     }
+    //     // });
+    // }else{
+    //     swal("Ooops..", "Please select currency", "error");
+    //     return false; 
+    // }
 }
 </script>
 @endsection

@@ -20,7 +20,7 @@ class RkpBanks extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['code_name', 'bank_code', 'account', 'monet_id', 'is_active'];
+    protected $fillable = ['code_name', 'bank_code', 'account', 'monet_id', 'is_active', 'saldo'];
 
     public static $rules = [
         'ru.bank_name' => 'required|string|min:1|max:255',

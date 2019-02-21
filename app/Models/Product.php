@@ -60,6 +60,25 @@ class Product extends Model
 
     public static $rules = [
         'manufacturer_title' => 'required|string|min:1|max:255',
+        'tnved' => 'required',
+        'parent_category_id' => 'required',
+        'child_category_id' => 'required',
+        'manufacturer_country_id' => 'required',
+        'srok_godnosti' => 'required|date|after:today',
+        'warranty' => 'required',
+        'measure_id' => 'required',
+        'quantity' => 'required',
+        'min_order' => 'required',
+        'max_order' => 'required',
+        'currency_id' => 'required',
+        'price' => 'required',
+        'produced_year' => 'required',
+        'basis_id' => 'required',
+        'basis_day' => 'required',
+        'basis_transport_type' => 'required',
+        'expire_at' => 'required|date|after:today',
+        'usage_percentage' => 'min:0|max:100',
+        'nds' => 'min:0|max:100',
     ];
 
     protected static function boot() {

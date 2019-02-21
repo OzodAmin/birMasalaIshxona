@@ -19,6 +19,7 @@ function()
     Route::resource('rkps', 'Dashboard\RkpController');
 
     Route::get('api/getChildCategories','Dashboard\ProductController@getChildCategories');
+    Route::get('api/getUserSaldo','Dashboard\ProductController@getUserSaldo');
 });
 
 Route::group(['prefix' => 'backend','middleware' => ['role:admin']], function() {
