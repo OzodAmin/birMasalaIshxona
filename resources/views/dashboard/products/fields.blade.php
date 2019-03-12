@@ -240,7 +240,7 @@
                             </h5>
                             <div class="input-with-icon">
                                 <div id="autocomplete-container">
-                                    <input id="autocomplete-input" class="with-border" type="text"name="summa" disabled>
+                                    <input id="autocomplete-input" class="with-border" type="text" disabled>
                                 </div>
                                 <i class="currencyAdding"></i>
                             </div>
@@ -379,26 +379,6 @@
 
                     <div class="clearfix"></div>
 
-                    <div class="col-xl-3">
-                        <div class="submit-field{{ $errors->has('expire_at') ? ' has-error' : '' }}">
-                            <h5 class="control-label">Срок действия объявления</h5>
-
-                            <div class="input-with-icon{{ $errors->has('expire_at') ? ' has-error' : '' }}">
-                                {{ Form::text('expire_at',
-                                    isset($product) ? $product->expire_at : null,
-                                    [
-                                        'class' => 'with-border',
-                                        'id' => 'datePicker'
-                                    ])
-                                }}
-                                <i class="icon-line-awesome-calendar"></i>
-                            </div>
-                            
-                        </div>
-                    </div>
-
-                    <div class="clearfix"></div>
-
                     <div class="col-xl-12">
                         <div class="submit-field{{ $errors->has('description') ? ' has-error' : '' }}">
                             <h5 class="control-label">
@@ -461,12 +441,12 @@
 </div>
 
 @section('scripts')
-<script src="{{ asset('sweetalert/sweetalert.min.js') }}"></script>
 <script src="{{ asset('datePicker/js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ asset('datePicker/locales/bootstrap-datepicker.ru.min.js') }}"></script>
 
 <script>
 
+const $quantity = document.querySelector('#quantity');
 const $minOrder = document.querySelector('#min_order');
 const $maxOrder = document.querySelector('#max_order');
 
@@ -506,8 +486,10 @@ setInterval(function() {
     if (price){
         if (quantity){
             var result = price * quantity;
+
             document.getElementById('autocomplete-input').value = result;
-            $('#autocomplete-input').val(result);
+
+            //$('#autocomplete-input').val(result);
         }else{
             $('#autocomplete-input').val('');
         }
@@ -604,13 +586,13 @@ $('#categoryId').on('change',function(){
 });
 
 function validateForm() {
-    if($maxOrder.value < $minOrder.value) {
-        swal("Ooops..", "Max is less than Min", "error");
+    if($maxOrder.value < $minOrder.value || $quantity.value < $minOrder.value) {
+        swal("Ooops..", "Max or Quantity is less than Min", "error");
         return false;
     }
 
-    var currencyId = $('#currency_id :selected').val();
-    var totalPrice = $('#autocomplete-input').val();
+    // var currencyId = $('#currency_id :selected').val();
+    // var totalPrice = $('#autocomplete-input').val();
 
     // if (currencyId) {
 

@@ -191,7 +191,31 @@
         <div class="header-widget hide-on-mobile">
             <div class="header-notifications">
                 <div class="header-notifications-trigger">
-                    <a href="#"><i class="icon-feather-bell"></i><span>4</span></a>
+                    <a href="#">
+                        <i class="icon-feather-bell"></i><span><?= count($notifications); ?></span>
+                    </a>
+                </div>
+                <!-- Dropdown -->
+                <div class="header-notifications-dropdown">
+                    <div class="header-notifications-content">
+                        <div class="header-notifications-scroll" data-simplebar>
+                            <ul>
+                                @foreach ($notifications as $notification)
+                                <!-- Notification -->
+                                <li>
+                                    <a href="/notification/{{$notification->id}}">
+                                        <span class="notification-text">
+                                            <strong>Новая заяавка</strong><br>
+                                            Лот №: 
+                                            <span class="color">{{ $notification->userOwnerProduct->lot_number }}</span>
+                                        </span>
+                                    </a>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 

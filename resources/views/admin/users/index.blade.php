@@ -40,11 +40,9 @@
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->company_legal_name }}</td>
                                     <td>
-                                    @foreach($users as $user)
                                         @foreach($user->roles as $role)
                                             {{ $role->display_name }}
                                         @endforeach
-                                    @endforeach
                                     </td>
                                     <td>
                                         @switch($user->status)

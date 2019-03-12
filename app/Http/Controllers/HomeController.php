@@ -3,15 +3,37 @@ namespace App\Http\Controllers;
 
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Illuminate\Http\Request;
+use App\Mail\RegisterMail;
+use App\Models\Category;
+use App\Models\Product;
+use Carbon\Carbon;
 use App\User;
 use Hash;
+use Mail;
 use DB;
 
 class HomeController extends AppBaseController
 {
+    private $locale;
+
+    public function __construct()
+    {
+        $this->locale = LaravelLocalization::getCurrentLocale();
+    }
+
     public function index(Request $request)
     {
-        return view('home');
+        $products = Product::whereTranslation('locale', $this->locale)->
+                    where('status', 3)->where('expire_at', '>', Carbon::now())->take(5)->get();
+
+        $categories = Category::whereTranslation('locale', $this->locale)->get();
+        return view('home.home', compact(['categories', 'products']));
+    }
+
+    public function categoryPage()
+    {
+        $categories = Category::whereTranslation('locale', $this->locale)->get();
+        return view('home.categories', compact(['categories']));
     }
 
     public function registeration(Request $request)
@@ -29,11 +51,14 @@ class HomeController extends AppBaseController
         	$request->merge(['username' => 'Z'.$request['inn']]);
         }
        
+        $password = $request['password'];
         $request['password'] = Hash::make($request['password']);
         $input = $request->except(['remember_token', 'role']);
         $user = User::create($input);
         
         $user->attachRole($request['role']);
+
+        Mail::to($user->email)->send(new RegisterMail());
 
         return back()->with('success','Registration success');
     }
@@ -56,25 +81,5 @@ class HomeController extends AppBaseController
         }
 
         return view('dashboard.profile.profileEdit',compact('user')); 
-    }
-
-    public function getCities(){
-    	$locale = LaravelLocalization::getCurrentLocale();
-    	$cities = DB::table('city_translations')
-            ->select("city_id", "title")
-            ->where("locale", $locale)
-            ->get();
-    	return response()->json($cities);
-    }
-
-    public function getDistricts(Request $request){
-    	$locale = LaravelLocalization::getCurrentLocale();
-    	$districts = DB::table('district_translations')
-    		->join('district', 'district_translations.district_id', '=', 'district.id')
-            ->select("district_translations.district_id", "district_translations.title")
-            ->where("district_translations.locale", $locale)
-            ->where("district.district_city_id", $request->city_id)
-            ->get();
-    	return response()->json($districts);
     }
 }

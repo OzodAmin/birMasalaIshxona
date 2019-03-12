@@ -9,6 +9,13 @@
 
 	<body class="gray">
 	    <div id="wrapper">
+
+	    	@if ($message = Session::get('success'))
+	            <div class="notification success closeable">
+	                <p>{{ $message }}</p>
+	                <a class="close" href="#"></a>
+	            </div>
+	        @endif
 	        
 	        @include('layouts.navigation')
 	        

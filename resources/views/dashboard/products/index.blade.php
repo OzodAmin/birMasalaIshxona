@@ -65,10 +65,6 @@
                                                 <i class="icon-material-outline-date-range"></i>
                                                 &nbsp;Posted on {{ $product->created_at }}
                                             </li>
-                                            <li>
-                                                <i class="icon-material-outline-date-range"></i>
-                                                &nbsp;Expiring on {{ $product->expire_at }}
-                                            </li>
                                         </ul>
                                     </div>
                                 </div>

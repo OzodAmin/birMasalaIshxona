@@ -51,11 +51,11 @@ class Product extends Model
         'usage_period', 
         'usage_condition', 
         'status', 
-        'expire_at',
         'basis_day',
         'basis_transport_type',
         'basis_id',
-        'lot_number'
+        'lot_number',
+        'expire_at'
     ];
 
     public static $rules = [
@@ -75,8 +75,7 @@ class Product extends Model
         'produced_year' => 'required',
         'basis_id' => 'required',
         'basis_day' => 'required',
-        'basis_transport_type' => 'required',
-        'expire_at' => 'required|date|after:today',
+        'basis_transport_type' => 'required',        
         'usage_percentage' => 'min:0|max:100',
         'nds' => 'min:0|max:100',
     ];

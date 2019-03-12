@@ -19,7 +19,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     use HasApiTokens;
     use EntrustUserTrait;
 
-    protected $fillable = ['role','name', 'inn', 'email', 'company_legal_name', 'phone', 'address', 'status', 'password', 'username'
+    protected $fillable = ['role','name', 'inn', 'email', 'company_legal_name', 'phone', 'address', 'status', 'password', 'username', 'email_verified_at'
     ];
 
     protected $hidden = [

@@ -35,4 +35,9 @@ class Category extends Model
             $category->deleteTranslations();
         });
     }
+
+    public function categoryChilds(){
+        return $this->hasMany('App\Models\ChildCategory', 'category_id', 'id');
+    }
+
 }

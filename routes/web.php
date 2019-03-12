@@ -6,15 +6,23 @@ Route::group(
 ],
 function()
 {
+    Route::get('products', 'ProductFrontController@index');
+
     Route::get('/', 'HomeController@index');
+    Route::get('categories', 'HomeController@categoryPage');
     Route::get('profile', 'HomeController@profile');
 	Route::get('profileEdit', 'HomeController@profileEdit');
     Route::get('api/getCities','HomeController@getCities');
     Route::get('api/getDistricts','HomeController@getDistricts');
     Route::post('registeration', 'HomeController@registeration');
-    Auth::routes();
+    Auth::routes(['verify' => true]);
+
+    Route::get('product/{slug}', ['as'=> 'product.show', 'uses' => 'ProductFrontController@show']);
+    Route::get('category/{id}', 'ProductFrontController@showByCategory');
+    Route::get('price-request/{id}', 'ProductFrontController@priceRequest');
 
     Route::get('dashboard', 'Dashboard\DashboardController@index');
+    Route::get('notification/{id}', 'Dashboard\DashboardController@notification');
     Route::resource('ownProducts','Dashboard\ProductController');
     Route::resource('rkps', 'Dashboard\RkpController');
 
@@ -46,6 +54,8 @@ Route::group(['prefix' => 'backend','middleware' => ['role:admin']], function() 
     Route::resource('basises', 'Admin\BasisController');
     Route::resource('product_statuses', 'Admin\ProductStatusController');
     Route::resource('products', 'Admin\ProductController');
+
+    Route::resource('holidays', 'Admin\HolidaysController');
 
     Route::get('api/getDistricts','Admin\UserController@getDistricts');
     Route::get('users/reset/{id}','Admin\UserController@reset');

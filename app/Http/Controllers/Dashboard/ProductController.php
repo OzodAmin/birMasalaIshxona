@@ -14,6 +14,7 @@ use App\Models\Country;
 use App\Models\Measure;
 use App\Models\Basis;
 use App\Models\Rkp;
+use Redirect;
 use App\User;
 use Flash;
 use DB;
@@ -69,15 +70,13 @@ class ProductController extends AppBaseController
                         where('currency_id', $request->currency_id)->
                         first();
         $ostatok = null;
-        if (isset($saldo)) {$ostatok = $saldo->saldo;}
+        if (isset($saldo)) {$ostatok = round($saldo->saldo);}
+        if (!$ostatok ){return Redirect::back()->withErrors(['No account']);}
     
-dd($request->summa); 
-        $request->merge(['saldo' => $ostatok]);
+        
     	$validation = Product::$rules + 
     		['featured_image' => 'required|image|max:2048|mimes:jpeg,png,jpg',
             'name' => 'required|string|min:1|max:255',
-            'summa' => 'required|min:1',
-	    	'saldo' => 'min:'.$request->summa,
 	        'description' => 'required|string|min:1|max:255'];
     	$this->validate($request, $validation);
     	
@@ -101,7 +100,11 @@ dd($request->summa);
     				'conditions' => $request['conditions']
     		]
         ]);
-       dd(); 
+        
+        $summa =  ($request->quantity * $request->price)/100*$request->deposit;
+        $ostatok = intval($ostatok);
+        if ($summa>$ostatok){return Redirect::back()->withErrors(['Not enough money']);}
+
         $product = new Product();
         $product->fill($request->except(['_token', 'name', 'description', 'conditions']));
 

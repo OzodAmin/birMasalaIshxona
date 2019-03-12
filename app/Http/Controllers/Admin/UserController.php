@@ -7,8 +7,9 @@ use App\Http\Controllers\AppBaseController;
 use App\Http\Controllers\Controller;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Mail;
-use App\Mail\DemoMail;
+use App\Mail\RegisterApprovedMail;
 use App\Models\UserStatus;
 use App\User;
 use App\Role;
@@ -78,7 +79,7 @@ class UserController extends AppBaseController
 
         $user->password = $password;
 
-        Mail::to($user->email)->send(new DemoMail($user));
+        Mail::to($user->email)->send(new RegisterApprovedMail($user));
 
         Flash::success('User saved successfully.');
 
@@ -129,9 +130,10 @@ class UserController extends AppBaseController
 
             $password = str_random(8);
             $user->password = $password;
-            Mail::to($user->email)->send(new DemoMail($user));
+            Mail::to($user->email)->send(new RegisterApprovedMail($user));
             $request->merge([
-                'password' => Hash::make($password)
+                'password' => Hash::make($password),
+                'email_verified_at' => Carbon::now()
             ]);
 
         }
@@ -168,7 +170,7 @@ class UserController extends AppBaseController
         $hashPassword = array('password' => Hash::make($password));
         $user->update($hashPassword);
         $user->password = $password;
-        Mail::to($user->email)->send(new DemoMail($user));
+        Mail::to($user->email)->send(new RegisterApprovedMail($user));
 
         Flash::success('Reset password send successfully.');
 

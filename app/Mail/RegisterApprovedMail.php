@@ -8,24 +8,17 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\User;
 
-class DemoMail extends Mailable
+class RegisterApprovedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     private $user;
 
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
+    public function __construct(User $user){$this->user = $user;}
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
     public function build()
     {
-        return $this->view('emails.demo')->with('user', $this->user);;
+        $user = $this->user;
+        return $this->view('emails.registerApproved',compact(['user']));
     }
 }

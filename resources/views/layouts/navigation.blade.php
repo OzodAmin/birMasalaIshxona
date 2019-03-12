@@ -38,6 +38,12 @@
                                 <li><a href="single-company-profile.html">Company Profile</a></li>
                             </ul>
                         </li>
+                        <li>
+                            <a href="/categories">Категории</a>
+                        </li>
+                        <li>
+                            <a href="/products">Товары</a>
+                        </li>
                     </ul>
                 </nav>
                 <div class="clearfix"></div>

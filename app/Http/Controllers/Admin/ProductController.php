@@ -9,12 +9,14 @@ use Illuminate\Http\UploadedFile;
 use App\Models\ProductStatus;
 use App\Models\ChildCategory;
 use Illuminate\Http\Request;
+use App\Models\Holidays;
 use App\Models\Category;
 use App\Models\Currency;
 use App\Models\Product;
 use App\Models\Country;
 use App\Models\Measure;
 use App\Models\Basis;
+use Carbon\Carbon;
 use App\User;
 use Flash;
 use DB;
@@ -79,6 +81,26 @@ class ProductController extends AppBaseController
         if (empty($product)) {
             Flash::error('Product not found');
             return redirect(route('products.index'));
+        }
+
+        if ($product->status == 1 && $request['status'] == 3) {
+            $product->updated_at = Carbon::now();
+            $holidays = Holidays::where('holiday', '>', Carbon::now())->get();
+            $holidays = $holidays->toArray();
+
+            $MyDateCarbon = Carbon::now();
+            $MyDateCarbon->addWeekdays(10);
+
+            for ($i = 1; $i <= 10; $i++) {
+
+                if (in_array(Carbon::now()->addWeekdays($i)->toDateString(), $holidays)) {
+
+                    $MyDateCarbon->addDay();
+
+                }
+            }
+
+            $request->merge(['expire_at' => $MyDateCarbon]);
         }
 
         $product->fill($request->except(['featured_image']));

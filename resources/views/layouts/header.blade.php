@@ -5,6 +5,7 @@
 <!--===============================================-->
 <link rel="icon" type="image/png" href="{{ asset('front/img/logo.ico') }}"/>
 <!--===============================================-->
+<link rel="stylesheet" href="{{ asset('admin/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('front/css/style.css') }}">
 <link rel="stylesheet" href="{{ asset('front/css/colors/blue.css') }}">
 
